@@ -1,0 +1,53 @@
+<!doctype html>
+<html lang="ko">
+<head>
+  <meta charset="utf-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1">
+  <title>한국전통포장</title>
+  <link rel="preconnect" href="https://fonts.googleapis.com">
+  <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+  <link href="https://fonts.googleapis.com/css2?family=Noto+Sans+KR:wght@400;500;700;800&family=Noto+Serif+KR:wght@700&display=swap" rel="stylesheet">
+  <link rel="stylesheet" href="assets/style.css">
+</head>
+<body>
+  <header class="hero">
+    <div class="hero__badge">강의 사이트</div>
+    <h1>한국전통포장</h1>
+  </header>
+
+  <main class="wrap">
+    <div class="section-head">
+      <h2>강의 목차</h2>
+      <p>카드를 누르면 그 차시 페이지로 이동합니다.</p>
+    </div>
+    <div class="cards" id="cards"></div>
+
+    <div class="section-head">
+      <h2>강의 자료</h2>
+      <p>교안을 PDF 파일로 내려받을 수 있습니다.</p>
+    </div>
+    <a class="download" href="files/전통포장교안.pdf" download="전통포장교안.pdf">
+      <span class="download__icon" aria-hidden="true">📄</span>
+      <span class="download__text"><b>강의 교안 (PDF)</b><small>한국전통포장 · 16쪽 · 1.8MB</small></span>
+      <span class="download__btn">⬇ 내려받기</span>
+    </a>
+  </main>
+
+  <footer>한국전통포장 강의 교안</footer>
+
+  <script src="assets/data.js"></script>
+  <script>
+    const c = window.COURSE;
+    document.getElementById('cards').innerHTML = c.parts.map((p, i) => `
+      <a class="card" href="session.html?n=${i + 1}">
+        <div class="card__img"><img src="${c.covers[i]}" alt="" loading="lazy"></div>
+        <div class="card__body">
+          <span class="card__tag">${p.tag}</span>
+          <h3>${p.title}</h3>
+          <p class="card__sum">${p.summary}</p>
+          <span class="card__go">열기 →</span>
+        </div>
+      </a>`).join('');
+  </script>
+</body>
+</html>

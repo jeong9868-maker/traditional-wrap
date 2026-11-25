@@ -1,0 +1,52 @@
+<!doctype html>
+<html lang="ko">
+<head>
+  <meta charset="utf-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1">
+  <title>한국전통포장</title>
+  <link rel="preconnect" href="https://fonts.googleapis.com">
+  <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+  <link href="https://fonts.googleapis.com/css2?family=Noto+Sans+KR:wght@400;500;700;800&family=Noto+Serif+KR:wght@700&display=swap" rel="stylesheet">
+  <link rel="stylesheet" href="assets/style.css">
+</head>
+<body>
+  <nav class="topnav" aria-label="차시 이동"><div class="topnav__in" id="nav"></div></nav>
+  <header class="hero hero--session" id="hero"></header>
+  <main class="wrap" id="main"></main>
+  <footer>한국전통포장 강의 교안</footer>
+
+  <script src="assets/data.js"></script>
+  <script>
+    const c = window.COURSE;
+    const total = c.parts.length;
+    let n = parseInt(new URLSearchParams(location.search).get('n'), 10);
+    if (!(n >= 1 && n <= total)) n = 1;
+    const p = c.parts[n - 1];
+    document.title = `${p.tag} · ${p.title}`;
+
+    document.getElementById('nav').innerHTML =
+      `<a class="home" href="index.html">⌂ 처음 화면</a>` +
+      c.parts.map((x, i) => `<a href="session.html?n=${i + 1}"${i + 1 === n ? ' aria-current="page"' : ''}>${x.tag}</a>`).join('');
+    const cur = document.querySelector('.topnav a[aria-current]');
+    if (cur) cur.scrollIntoView({ inline: 'center', block: 'nearest' });
+
+    document.getElementById('hero').innerHTML = `
+      <div class="wrap" style="padding:0">
+        <div class="crumb">${c.title} · ${p.tag}</div>
+        <h1>${p.title}</h1>
+        <p>${p.summary}</p>
+      </div>`;
+
+    const prev = n > 1 ? c.parts[n - 2] : null;
+    const next = n < total ? c.parts[n] : null;
+    document.getElementById('main').innerHTML = `
+      ${p.sections.length > 1 ? `<div class="chips">${p.sections.map(s => `<a href="#${s.id}">${s.title}</a>`).join('')}</div>` : ''}
+      ${p.sections.map(s => `<section class="block" id="${s.id}"><h2>${s.title}</h2>${s.html}</section>`).join('')}
+      <div class="pager">
+        ${prev ? `<a class="prev" href="session.html?n=${n - 1}"><small>← 이전</small>${prev.title}</a>` : ''}
+        ${next ? `<a class="next" href="session.html?n=${n + 1}"><small>다음 →</small>${next.title}</a>` : ''}
+      </div>
+      <a class="home-btn" href="index.html">⌂ 처음 화면으로</a>`;
+  </script>
+</body>
+</html>
